@@ -1,0 +1,252 @@
+
+
+
+
+#region VARIAVEIS.
+
+vel_h       = 0;
+max_vel_h   = 2;
+vel_v       = 0;
+max_vel_v    = 3.8;    // Pulo.
+grav        = 0.2;  // Gravidade.
+
+
+
+// Variavel do level.
+chao = false;
+
+// VAriaveis de inpust.
+
+jump   = false;
+down  = false;
+left  = false;
+right = false;
+        
+
+view_player = noone;
+
+// Variaveis do estados
+estado = noone;
+#endregion
+
+
+
+
+
+
+#region METODOS.
+// Metodo para pegar inputs.
+pega_iputs = function()
+{
+    jump       = keyboard_check(vk_space);
+
+    down      = keyboard_check(ord("W"));
+        
+    left      = keyboard_check(ord("A"));  
+        
+    right     = keyboard_check(ord("D"));  
+}
+
+checa_chao = function ()
+{
+    chao = place_meeting(x,y+1,obj_parede);
+    // Se eu nao estou no chao aplico a minha velocidade.
+    if(!chao) // SE eu NÃO estou no chao.
+    {
+        vel_v+= grav
+    }
+    else // Estou no chao.
+    {
+    	vel_h = 0; // Zerando a velocidade.
+        y = round(y);
+        
+        if (jump)
+    {
+        	vel_v = -max_vel_v;
+        }
+    }
+}
+
+
+ troca_sprite = function(_sprite = spr_parede)
+{
+    // Checando se eu ainda não estou com a sprite correta.
+    if (sprite_index != _sprite)
+    {   
+        // Troca sprite.
+        sprite_index = _sprite;
+        // Zero a animação.
+        image_index = 0;
+    }
+
+    
+}
+    
+    
+
+// Metodos dos estados.
+estado_parado = function()
+{
+    
+    // Codigo.
+    // logica.
+    // Do estado parado. 
+    
+    // Trocando a sprite.
+    troca_sprite(spr_pleyer_idle);
+    
+    image_blend = c_red; // Pintando o player de vermelho.
+    
+    
+     
+    // Se eu apertar para direita ou esquerda mudar para o estado movendo.
+    if (left xor right)
+    {
+    	estado = estado_movendo;
+    }
+    
+    if (jump)
+    {
+    	estado = estado_pulando;
+    }
+    
+    if (!chao)
+    {
+    	estado = estado_pulando;
+    }
+}
+
+estado_movendo = function()
+{
+    // Codigo.
+    // Logica.
+    // Do estado movendo.
+        // Eu não mudei a sprite ainda.
+    // Eu nao estou usando a sprite correta.
+    //show_message(sprite_get_name(sprite_index));
+    
+    aplica_velocidade();
+    
+    troca_sprite(spr_player_move);
+    
+    
+    image_blend = c_blue;
+    
+    if (jump)
+    {
+    	estado = estado_pulando;
+    }
+   
+        // Se eu nao estou me movendo , estou parado?.a
+    if (vel_h== 0)
+    {
+    	estado =  estado_parado;
+    }
+}
+
+estado_pulando = function()
+{
+    // Codigo.
+    // Logica.
+    // Do estado pulando.
+    image_blend = c_yellow;
+   
+    aplica_velocidade();
+    // Mudando o estado para estado_parado , quando?
+    // Se eu nao me mover para esquerda ou direita (estou parado?) e se eu estiver caindo ?
+    
+    if (vel_v<0)// estou subindo?
+    {
+    	 troca_sprite(spr_player_jump_cima);
+       // show_debug_message(" fiu");
+    }
+    else // estou caindo?
+    {
+        troca_sprite(spr_player_jump_baixo)
+        //show_message("onde?");
+       // show_debug_message("poin");
+        
+    }
+    
+   
+    if(chao) 
+    {
+        estado = estado_parado;
+    }
+    
+     
+
+}
+
+
+
+
+// Metodo de movimentação.
+aplica_velocidade = function ()
+{
+    // Aplicando agravidade.
+    // Aplicando os inputs no vel_h.
+    vel_h = (right-left)*max_vel_h;
+    
+    // Usando o move and collide.
+    move_and_collide(vel_h,0,obj_parede,24);
+    move_and_collide(0,vel_v,obj_parede,24);
+}
+#endregion
+
+
+
+
+
+
+#region Debug.
+roda_debud = function ()
+{
+   
+   view_player = dbg_view("View_player",1,60,100,200,200);
+    show_debug_overlay(global.debug);
+    dbg_watch(ref_create(id,"vel_v"),"vel_v"); 
+    dbg_watch(ref_create(id,"chao"),"No chao"); 
+    dbg_slider(ref_create(id,"max_vel_v"),0,10,"max_vel_v",0.1);
+    dbg_slider(ref_create(id,"grav"),0,1,"gravidade",0.01); 
+    dbg_slider(ref_create(id,"vel_h"),0,1,"Vel H",0.01); 
+     
+   
+   
+}
+
+
+ativa_debug = function ()
+{
+    // Se o jogo não está no modo debug , ele não faz nada do debug.
+    if (!DEBU_MODE) return;
+    // Alternando o estado de debug.
+   if(keyboard_check_released(vk_tab))
+   {
+       // Se o sebug e true ele fira false , se  e false vira true.
+        global.debug = !global.debug;
+        //show_debug_message(global.debug);
+        
+        // So roda se tiver em modo debug.
+        if(global.debug)
+        {
+            // rodando meu deub.
+            roda_debud();
+        }
+        else 
+        {
+            // Desativo o debug overley.
+            show_debug_overlay(0);
+        	if(dbg_view_exists(view_player)) dbg_view_delete(view_player);
+        }
+        
+   }
+    
+}
+
+#endregion
+
+
+// As últimas coisa que eu faço no meu create.
+// Definindo o estado inicial do plater.
+estado = estado_parado;
