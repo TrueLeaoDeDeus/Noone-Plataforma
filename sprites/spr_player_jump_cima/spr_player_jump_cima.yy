@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":7,
   "parent":{
-    "name":"grup_player",
-    "path":"folders/sprite/grup_player.yy",
+    "name":"grup_move",
+    "path":"folders/sprite/grup_player/grup_move.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

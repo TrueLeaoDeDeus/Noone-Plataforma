@@ -1,13 +1,10 @@
 
-
-
-
 #region VARIAVEIS.
 
 vel_h       = 0;
 max_vel_h   = 2;
 vel_v       = 0;
-max_vel_v    = 3.8;    // Pulo.
+max_vel_v   = 3.8;    // Pulo.
 grav        = 0.2;  // Gravidade.
 
 
@@ -17,28 +14,23 @@ chao = false;
 
 // VAriaveis de inpust.
 
-jump   = false;
-down  = false;
-left  = false;
-right = false;
+jump        = false;
+down        = false;
+left        = false;
+right       = false;
         
 
 view_player = noone;
 
 // Variaveis do estados
-estado = noone;
+estado      = noone;
 #endregion
-
-
-
-
-
 
 #region METODOS.
 // Metodo para pegar inputs.
-pega_iputs = function()
+pega_iputs              = function()
 {
-    jump       = keyboard_check(vk_space);
+    jump       = keyboard_check_pressed(vk_space);
 
     down      = keyboard_check(ord("W"));
         
@@ -47,7 +39,7 @@ pega_iputs = function()
     right     = keyboard_check(ord("D"));  
 }
 
-checa_chao = function ()
+checa_chao              = function ()
 {
     chao = place_meeting(x,y+1,obj_parede);
     // Se eu nao estou no chao aplico a minha velocidade.
@@ -68,7 +60,7 @@ checa_chao = function ()
 }
 
 
- troca_sprite = function(_sprite = spr_parede)
+ troca_sprite           = function(_sprite = spr_parede)
 {
     // Checando se eu ainda não estou com a sprite correta.
     if (sprite_index != _sprite)
@@ -81,11 +73,18 @@ checa_chao = function ()
 
     
 }
-    
-    
+
+acabou_animacao         = function()
+{
+    var _spd = sprite_get_speed(sprite_index)/ FPS;
+    if (image_index + _spd >= image_number) 
+    {
+    	return true;
+    } 
+}
 
 // Metodos dos estados.
-estado_parado = function()
+estado_parado           = function()
 {
     
     // Codigo.
@@ -116,7 +115,7 @@ estado_parado = function()
     }
 }
 
-estado_movendo = function()
+estado_movendo          = function()
 {
     // Codigo.
     // Logica.
@@ -144,7 +143,7 @@ estado_movendo = function()
     }
 }
 
-estado_pulando = function()
+estado_pulando          = function()
 {
     // Codigo.
     // Logica.
@@ -178,12 +177,63 @@ estado_pulando = function()
 
 }
 
-
-
-
-// Metodo de movimentação.
-aplica_velocidade = function ()
+estado_powerup_inicio   = function ()
 {
+    troca_sprite(spr_player_powerup_inicio);
+    
+    var _spd = sprite_get_speed(sprite_index) / FPS;
+    // Trocando o estado quando estiver no final da animação.
+    if (image_index + _spd>= image_number)
+    {   // troca estado.
+    	estado = estado_powerup_meio;
+        //show_debug_message("1");
+    }
+}
+
+estado_powerup_meio     = function()
+{
+    troca_sprite(spr_player_powerup_meio);
+     var _spd = sprite_get_speed(sprite_index) / FPS;
+    // Trocando  o estado no final da animação.
+    if (acabou_animacao())
+    {
+    	estado = estado_powerup_fim;
+    }
+} 
+
+estado_powerup_fim      = function()
+{   // No final da animação vai para o estado parado.
+    troca_sprite(spr_player_powerup_fim);
+    if (acabou_animacao()) 
+    {   
+        estado = estado_parado;
+        //show_debug_message("3");
+    }   
+    
+    
+}  
+
+estado_entrando_tinta   = function ()
+{   // Trocando a sprite.
+    troca_sprite(spr_player_tinta_entrar);
+    if (acabou_animacao()) 
+    {   // Mudando o estado no final da animação.
+    	estado = estado_saindo_tinta;
+    }
+} 
+
+estado_saindo_tinta     = function ()
+{   //trocando a sprite.
+    troca_sprite(spr_player_tinta_sair);
+    if (acabou_animacao()) 
+    {   // Mudando o estado no final da animação.
+    	estado = estado_parado;
+    }
+}
+// Metodo de movimentação.
+aplica_velocidade       = function ()
+{
+    //checa_chao();
     // Aplicando agravidade.
     // Aplicando os inputs no vel_h.
     vel_h = (right-left)*max_vel_h;
@@ -192,15 +242,11 @@ aplica_velocidade = function ()
     move_and_collide(vel_h,0,obj_parede,24);
     move_and_collide(0,vel_v,obj_parede,24);
 }
+
 #endregion
 
-
-
-
-
-
 #region Debug.
-roda_debud = function ()
+roda_debud              = function ()
 {
    
    view_player = dbg_view("View_player",1,60,100,200,200);
@@ -214,9 +260,7 @@ roda_debud = function ()
    
    
 }
-
-
-ativa_debug = function ()
+ativa_debug             = function ()
 {
     // Se o jogo não está no modo debug , ele não faz nada do debug.
     if (!DEBU_MODE) return;
@@ -243,10 +287,9 @@ ativa_debug = function ()
    }
     
 }
-
 #endregion
 
 
 // As últimas coisa que eu faço no meu create.
 // Definindo o estado inicial do plater.
-estado = estado_parado;
+estado = estado_entrando_tinta;

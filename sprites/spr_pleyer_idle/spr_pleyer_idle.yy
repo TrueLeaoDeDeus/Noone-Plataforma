@@ -39,8 +39,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"grup_player",
-    "path":"folders/sprite/grup_player.yy",
+    "name":"grup_idle",
+    "path":"folders/sprite/grup_player/grup_idle.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
