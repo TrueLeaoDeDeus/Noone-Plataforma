@@ -37,7 +37,7 @@
   ],
   "name":"spr_pleyer_idle",
   "nineSlice":null,
-  "origin":9,
+  "origin":7,
   "parent":{
     "name":"grup_idle",
     "path":"folders/sprite/grup_player/grup_idle.yy",
@@ -131,7 +131,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":8,
+    "xorigin":7,
     "yorigin":24,
   },
   "swatchColours":null,

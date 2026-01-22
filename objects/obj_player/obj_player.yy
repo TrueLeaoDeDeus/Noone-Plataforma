@@ -35,6 +35,9 @@
     "name":"spr_pleyer_idle",
     "path":"sprites/spr_pleyer_idle/spr_pleyer_idle.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_pleyer_idle",
+    "path":"sprites/spr_pleyer_idle/spr_pleyer_idle.yy",
+  },
   "visible":true,
 }
