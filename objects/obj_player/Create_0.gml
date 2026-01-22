@@ -60,6 +60,7 @@ checa_chao              = function ()
 }
 
 
+
  troca_sprite           = function(_sprite = spr_parede)
 {
     // Checando se eu ainda não estou com a sprite correta.
@@ -94,7 +95,7 @@ estado_parado           = function()
     // Trocando a sprite.
     troca_sprite(spr_pleyer_idle);
     
-    image_blend = c_red; // Pintando o player de vermelho.
+    //image_blend = c_red; // Pintando o player de vermelho.
     
     
      
@@ -106,6 +107,7 @@ estado_parado           = function()
     
     if (jump)
     {
+        instance_create_depth(x,y,depth-1,obj_pulo_particula);
     	estado = estado_pulando;
     }
     
@@ -115,8 +117,18 @@ estado_parado           = function()
     }
 }
 
+ajusta_escala = function ()
+{
+    // Se a velocidade horizontal for diferente de 0 altera a imagem escala no X usando SIGN com velocidade horizontal.
+    if (vel_h != 0)
+    {
+        image_xscale = sign(vel_h);
+    }
+}
+
 estado_movendo          = function()
 {
+    
     // Codigo.
     // Logica.
     // Do estado movendo.
@@ -129,7 +141,7 @@ estado_movendo          = function()
     troca_sprite(spr_player_move);
     
     
-    image_blend = c_blue;
+    //image_blend = c_blue;
     
     if (jump)
     {
@@ -148,16 +160,17 @@ estado_pulando          = function()
     // Codigo.
     // Logica.
     // Do estado pulando.
-    image_blend = c_yellow;
-   
+    //image_blend = c_yellow;
+    
     aplica_velocidade();
     // Mudando o estado para estado_parado , quando?
     // Se eu nao me mover para esquerda ou direita (estou parado?) e se eu estiver caindo ?
     
     if (vel_v<0)// estou subindo?
-    {
-    	 troca_sprite(spr_player_jump_cima);
-       // show_debug_message(" fiu");
+    { 
+        troca_sprite(spr_player_jump_cima);
+       
+        // show_debug_message(" fiu");
     }
     else // estou caindo?
     {
@@ -171,6 +184,8 @@ estado_pulando          = function()
     if(chao) 
     {
         estado = estado_parado;
+        // instanceando particula no pulo.
+        instance_create_depth(x,y,depth-1,obj_pousar_particula);
     }
     
      
@@ -237,7 +252,7 @@ aplica_velocidade       = function ()
     // Aplicando agravidade.
     // Aplicando os inputs no vel_h.
     vel_h = (right-left)*max_vel_h;
-    
+    ajusta_escala();
     // Usando o move and collide.
     move_and_collide(vel_h,0,obj_parede,24);
     move_and_collide(0,vel_v,obj_parede,24);
@@ -292,4 +307,4 @@ ativa_debug             = function ()
 
 // As últimas coisa que eu faço no meu create.
 // Definindo o estado inicial do plater.
-estado = estado_entrando_tinta;
+estado = estado_parado;
