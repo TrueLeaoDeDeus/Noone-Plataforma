@@ -1,3 +1,3 @@
 draw_self();
 
-//draw_text(x,10," ");
+draw_text(x,y-50,estado_atual);

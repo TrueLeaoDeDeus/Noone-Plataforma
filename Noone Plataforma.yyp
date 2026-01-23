@@ -47,6 +47,7 @@
     {"id":{"name":"spr_player_powerup_inicio","path":"sprites/spr_player_powerup_inicio/spr_player_powerup_inicio.yy",},},
     {"id":{"name":"spr_player_powerup_meio","path":"sprites/spr_player_powerup_meio/spr_player_powerup_meio.yy",},},
     {"id":{"name":"spr_player_tinta_entrar","path":"sprites/spr_player_tinta_entrar/spr_player_tinta_entrar.yy",},},
+    {"id":{"name":"spr_player_tinta_loop","path":"sprites/spr_player_tinta_loop/spr_player_tinta_loop.yy",},},
     {"id":{"name":"spr_player_tinta_sair","path":"sprites/spr_player_tinta_sair/spr_player_tinta_sair.yy",},},
     {"id":{"name":"spr_pleyer_idle","path":"sprites/spr_pleyer_idle/spr_pleyer_idle.yy",},},
     {"id":{"name":"spr_pouso_particolas","path":"sprites/spr_pouso_particolas/spr_pouso_particolas.yy",},},

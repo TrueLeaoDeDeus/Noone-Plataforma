@@ -7,7 +7,7 @@ vel_v       = 0;
 max_vel_v   = 3.8;    // Pulo.
 grav        = 0.2;  // Gravidade.
 
-
+estado_atual = " ";
 
 // Variavel do level.
 chao = false;
@@ -18,7 +18,8 @@ jump        = false;
 down        = false;
 left        = false;
 right       = false;
-        
+
+tinta_forma = false;
 
 view_player = noone;
 
@@ -30,13 +31,15 @@ estado      = noone;
 // Metodo para pegar inputs.
 pega_iputs              = function()
 {
-    jump       = keyboard_check_pressed(vk_space);
+    jump      = keyboard_check_pressed(vk_space);
 
     down      = keyboard_check(ord("W"));
         
     left      = keyboard_check(ord("A"));  
         
-    right     = keyboard_check(ord("D"));  
+    right     = keyboard_check(ord("D"));
+    
+    paint     = keyboard_check_pressed(ord("E"));  
 }
 
 checa_chao              = function ()
@@ -58,8 +61,6 @@ checa_chao              = function ()
         }
     }
 }
-
-
 
  troca_sprite           = function(_sprite = spr_parede)
 {
@@ -87,7 +88,7 @@ acabou_animacao         = function()
 // Metodos dos estados.
 estado_parado           = function()
 {
-    
+    estado_atual = "es_parado";
     // Codigo.
     // logica.
     // Do estado parado. 
@@ -115,6 +116,12 @@ estado_parado           = function()
     {
     	estado = estado_pulando;
     }
+    
+    // Se eu apertar E mudar para estado entrando tinta.
+    if (paint) 
+    {
+    	estado = estado_entrando_tinta;
+    }
 }
 
 ajusta_escala = function ()
@@ -128,7 +135,7 @@ ajusta_escala = function ()
 
 estado_movendo          = function()
 {
-    
+    estado_atual = "es_movendo";
     // Codigo.
     // Logica.
     // Do estado movendo.
@@ -157,6 +164,7 @@ estado_movendo          = function()
 
 estado_pulando          = function()
 {
+    estado_atual = "es_pulando";
     // Codigo.
     // Logica.
     // Do estado pulando.
@@ -194,6 +202,7 @@ estado_pulando          = function()
 
 estado_powerup_inicio   = function ()
 {
+    estado_atual = "es_pow_inic";
     troca_sprite(spr_player_powerup_inicio);
     
     var _spd = sprite_get_speed(sprite_index) / FPS;
@@ -207,6 +216,7 @@ estado_powerup_inicio   = function ()
 
 estado_powerup_meio     = function()
 {
+    estado_atual = "es_pow_meio";
     troca_sprite(spr_player_powerup_meio);
      var _spd = sprite_get_speed(sprite_index) / FPS;
     // Trocando  o estado no final da animação.
@@ -217,7 +227,9 @@ estado_powerup_meio     = function()
 } 
 
 estado_powerup_fim      = function()
-{   // No final da animação vai para o estado parado.
+{   
+    estado_atual = "es_pow_fin";
+    // No final da animação vai para o estado parado.
     troca_sprite(spr_player_powerup_fim);
     if (acabou_animacao()) 
     {   
@@ -229,16 +241,41 @@ estado_powerup_fim      = function()
 }  
 
 estado_entrando_tinta   = function ()
-{   // Trocando a sprite.
+{   
+    estado_atual = "es_ent_tinta";
+    // Trocando a sprite.
     troca_sprite(spr_player_tinta_entrar);
     if (acabou_animacao()) 
     {   // Mudando o estado no final da animação.
-    	estado = estado_saindo_tinta;
+    	estado = estado_tinta_loop;
     }
 } 
 
+estado_tinta_loop = function () 
+{   
+    estado_atual = "es_tin_loop";
+    
+    // Se eu estou na forma de tinta eu nao pulo?
+    tinta_forma = true;
+    // Troca sprite.
+    troca_sprite(spr_player_tinta_loop);
+    
+    // Apricando movimento
+    aplica_velocidade();
+    // Se eu apertar E saio do estado tinta loop.
+    if (paint)
+    {
+    	estado = estado_saindo_tinta;
+        
+        // Não sou mais tinta? posso pular!
+        tinta_forma = false; 
+    }
+}
+
 estado_saindo_tinta     = function ()
-{   //trocando a sprite.
+{   
+    estado_atual = "es_saindo_tinta";
+    //trocando a sprite.
     troca_sprite(spr_player_tinta_sair);
     if (acabou_animacao()) 
     {   // Mudando o estado no final da animação.
@@ -255,7 +292,11 @@ aplica_velocidade       = function ()
     ajusta_escala();
     // Usando o move and collide.
     move_and_collide(vel_h,0,obj_parede,24);
-    move_and_collide(0,vel_v,obj_parede,24);
+    if (tinta_forma == false) 
+    {
+    	move_and_collide(0,vel_v,obj_parede,24);
+    }
+    
 }
 
 #endregion
