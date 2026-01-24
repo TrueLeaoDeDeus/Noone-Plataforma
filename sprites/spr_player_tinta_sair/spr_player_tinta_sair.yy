@@ -34,7 +34,7 @@
   ],
   "name":"spr_player_tinta_sair",
   "nineSlice":null,
-  "origin":7,
+  "origin":9,
   "parent":{
     "name":"grup_tinta",
     "path":"folders/sprite/grup_tinta.yy",
@@ -119,7 +119,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":10,
+    "xorigin":9,
     "yorigin":34,
   },
   "swatchColours":null,

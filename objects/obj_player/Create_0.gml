@@ -4,7 +4,7 @@
 vel_h       = 0;
 max_vel_h   = 2;
 vel_v       = 0;
-max_vel_v   = 3.8;    // Pulo.
+max_vel_v   = 4.5;    // Pulo.
 grav        = 0.2;  // Gravidade.
 
 estado_atual = " ";
@@ -19,7 +19,7 @@ down        = false;
 left        = false;
 right       = false;
 
-tinta_forma = false;
+//tinta_forma = false;
 
 view_player = noone;
 
@@ -51,12 +51,12 @@ checa_chao              = function ()
         vel_v+= grav
     }
     else // Estou no chao.
-    {
-    	vel_h = 0; // Zerando a velocidade.
+    { 
+        vel_v = 0; // Zerando a velocidade.
         y = round(y);
         
         if (jump)
-    {
+        {
         	vel_v = -max_vel_v;
         }
     }
@@ -121,6 +121,7 @@ estado_parado           = function()
     if (paint) 
     {
     	estado = estado_entrando_tinta;
+        
     }
 }
 
@@ -159,6 +160,12 @@ estado_movendo          = function()
     if (vel_h== 0)
     {
     	estado =  estado_parado;
+    }
+    
+     if (paint) 
+    {
+    	estado = estado_entrando_tinta;
+        
     }
 }
 
@@ -245,6 +252,13 @@ estado_entrando_tinta   = function ()
     estado_atual = "es_ent_tinta";
     // Trocando a sprite.
     troca_sprite(spr_player_tinta_entrar);
+
+    if (!instance_exists(obj_pulo_entrar_particula)) 
+    {
+    	// Criando particulas quanado entra na tinta.
+         instance_create_depth(x,y,depth-1,obj_pulo_entrar_particula);
+    }
+    
     if (acabou_animacao()) 
     {   // Mudando o estado no final da animação.
     	estado = estado_tinta_loop;
@@ -254,29 +268,41 @@ estado_entrando_tinta   = function ()
 estado_tinta_loop = function () 
 {   
     estado_atual = "es_tin_loop";
-    
-    // Se eu estou na forma de tinta eu nao pulo?
-    tinta_forma = true;
-    // Troca sprite.
+
+    // Em tinta não cai
+    vel_v = 0;
+
     troca_sprite(spr_player_tinta_loop);
-    
-    // Apricando movimento
-    aplica_velocidade();
-    // Se eu apertar E saio do estado tinta loop.
+
+    // Primeiro calcula a velocidade
+    vel_h = (right - left) * max_vel_h;
+    ajusta_escala();
+
+    // Agora testa corretamente
+    if (place_meeting(x + (vel_h*8), y + 1, obj_parede))
+    {
+        move_and_collide(vel_h, 0, obj_parede, 24);
+    }
+    else
+    {
+        vel_h = 0;
+    }
+
+    // Sair da tinta
     if (paint)
     {
-    	estado = estado_saindo_tinta;
-        
-        // Não sou mais tinta? posso pular!
-        tinta_forma = false; 
+        estado = estado_saindo_tinta;
+        instance_create_depth(x, y, depth - 1, obj_pulo_sair_particula);
     }
 }
+
 
 estado_saindo_tinta     = function ()
 {   
     estado_atual = "es_saindo_tinta";
     //trocando a sprite.
     troca_sprite(spr_player_tinta_sair);
+
     if (acabou_animacao()) 
     {   // Mudando o estado no final da animação.
     	estado = estado_parado;
@@ -289,33 +315,50 @@ aplica_velocidade       = function ()
     // Aplicando agravidade.
     // Aplicando os inputs no vel_h.
     vel_h = (right-left)*max_vel_h;
-    ajusta_escala();
+    
     // Usando o move and collide.
     move_and_collide(vel_h,0,obj_parede,24);
-    if (tinta_forma == false) 
-    {
-    	move_and_collide(0,vel_v,obj_parede,24);
-    }
     
+    move_and_collide(0,vel_v,obj_parede,24);
+    
+    ajusta_escala();
 }
 
 #endregion
 
 #region Debug.
-roda_debud              = function ()
+roda_debud = function ()
 {
-   
-   view_player = dbg_view("View_player",1,60,100,200,200);
+    view_player = dbg_view("View_player", 1, 60, 100, 240, 260);
     show_debug_overlay(global.debug);
-    dbg_watch(ref_create(id,"vel_v"),"vel_v"); 
-    dbg_watch(ref_create(id,"chao"),"No chao"); 
-    dbg_slider(ref_create(id,"max_vel_v"),0,10,"max_vel_v",0.1);
-    dbg_slider(ref_create(id,"grav"),0,1,"gravidade",0.01); 
-    dbg_slider(ref_create(id,"vel_h"),0,1,"Vel H",0.01); 
-     
-   
-   
+
+    // === FÍSICA ===
+    dbg_watch(ref_create(id, "vel_v"),     "vel_v");
+    dbg_watch(ref_create(id, "vel_h"),     "vel_h");
+    dbg_watch(ref_create(id, "grav"),      "grav");
+    dbg_watch(ref_create(id, "max_vel_v"), "max_vel_v");
+    dbg_watch(ref_create(id, "max_vel_h"), "max_vel_h");
+
+    // === CHÃO ===
+    dbg_watch(ref_create(id, "chao"), "No chao");
+
+    // === INPUT ===
+    dbg_watch(ref_create(id, "jump"),  "jump");
+    dbg_watch(ref_create(id, "down"),  "down");
+    dbg_watch(ref_create(id, "left"),  "left");
+    dbg_watch(ref_create(id, "right"), "right");
+    dbg_watch(ref_create(id, "paint"), "paint");
+
+    // === ESTADO ===
+    dbg_watch(ref_create(id, "estado_atual"), "estado_atual");
+    dbg_watch(ref_create(id, "estado"),       "estado (func)");
+
+    // === SLIDERS (SÓ CONSTANTES) ===
+    dbg_slider(ref_create(id, "grav"),      0, 1,  "grav",      0.01);
+    dbg_slider(ref_create(id, "max_vel_v"), 0, 10, "max_vel_v", 0.1);
+    dbg_slider(ref_create(id, "max_vel_h"), 0, 10, "max_vel_h", 0.1);
 }
+
 ativa_debug             = function ()
 {
     // Se o jogo não está no modo debug , ele não faz nada do debug.
