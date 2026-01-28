@@ -4,7 +4,7 @@
 vel_h       = 0;
 max_vel_h   = 2;
 vel_v       = 0;
-max_vel_v   = 4.5;    // Pulo.
+max_vel_v   = 6;    // Pulo.
 grav        = 0.2;  // Gravidade.
 
 estado_atual = " ";
@@ -19,7 +19,11 @@ down        = false;
 left        = false;
 right       = false;
 
-//tinta_forma = false;
+// Variaveis da minha lista de coliçoes.
+// Pegando minha leyer.
+var _leyer = layer_tilemap_get_id("tl_level");
+
+colisoes = [obj_parede,_leyer];
 
 view_player = noone;
 
@@ -44,11 +48,12 @@ pega_iputs              = function()
 
 checa_chao              = function ()
 {
-    chao = place_meeting(x,y+1,obj_parede);
+    chao = place_meeting(x,y+1,colisoes);
     // Se eu nao estou no chao aplico a minha velocidade.
     if(!chao) // SE eu NÃO estou no chao.
     {
-        vel_v+= grav
+        vel_v+= grav;
+        
     }
     else // Estou no chao.
     { 
@@ -60,6 +65,9 @@ checa_chao              = function ()
         	vel_v = -max_vel_v;
         }
     }
+    
+
+    
 }
 
  troca_sprite           = function(_sprite = spr_parede)
@@ -177,6 +185,7 @@ estado_pulando          = function()
     // Do estado pulando.
     //image_blend = c_yellow;
     
+    
     aplica_velocidade();
     // Mudando o estado para estado_parado , quando?
     // Se eu nao me mover para esquerda ou direita (estou parado?) e se eu estiver caindo ?
@@ -192,7 +201,8 @@ estado_pulando          = function()
         troca_sprite(spr_player_jump_baixo)
         //show_message("onde?");
        // show_debug_message("poin");
-        
+            // Limitando a velocidade de queda do player.
+         vel_v = clamp(vel_v,-max_vel_v,max_vel_v);
     }
     
    
@@ -279,9 +289,9 @@ estado_tinta_loop = function ()
     ajusta_escala();
 
     // Agora testa corretamente
-    if (place_meeting(x + (vel_h*8), y + 1, obj_parede))
+    if (place_meeting(x + (vel_h*8), y + 1, colisoes))
     {
-        move_and_collide(vel_h, 0, obj_parede, 24);
+        move_and_collide(vel_h, 0, colisoes, 24);
     }
     else
     {
@@ -317,9 +327,9 @@ aplica_velocidade       = function ()
     vel_h = (right-left)*max_vel_h;
     
     // Usando o move and collide.
-    move_and_collide(vel_h,0,obj_parede,24);
+    move_and_collide(vel_h,0,colisoes,24);
     
-    move_and_collide(0,vel_v,obj_parede,24);
+    move_and_collide(0,vel_v,colisoes,24);
     
     ajusta_escala();
 }
