@@ -9,8 +9,8 @@
   "name":"obj_tocha",
   "overriddenProperties":[],
   "parent":{
-    "name":"objeto",
-    "path":"folders/objeto.yy",
+    "name":"level",
+    "path":"folders/objeto/level.yy",
   },
   "parentObjectId":null,
   "persistent":false,

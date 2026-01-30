@@ -23,7 +23,7 @@ right       = false;
 // Pegando minha leyer.
 var _leyer = layer_tilemap_get_id("tl_level");
 
-colisoes = [obj_parede,_leyer];
+colisoes = [obj_parede,_leyer, obj_parede_one_way];
 
 view_player = noone;
 
@@ -195,6 +195,9 @@ estado_pulando          = function()
         troca_sprite(spr_player_jump_cima);
        
         // show_debug_message(" fiu");
+        
+        // Removendo objeto one way da  lista.
+        colisoes[2] = obj_parede;
     }
     else // estou caindo?
     {
@@ -203,6 +206,13 @@ estado_pulando          = function()
        // show_debug_message("poin");
             // Limitando a velocidade de queda do player.
          vel_v = clamp(vel_v,-max_vel_v,max_vel_v);
+        // SE eu estoucaindo eu posso aterrisar no obj one way.
+        // Eu presiso  verificar se eu nao estou coledindo com objeto one way.
+        if (!place_meeting(x,y,obj_parede_one_way))
+        {
+        	colisoes[2]= obj_parede_one_way;
+        }
+        
     }
     
    

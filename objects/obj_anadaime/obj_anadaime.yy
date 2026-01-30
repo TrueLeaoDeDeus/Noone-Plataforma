@@ -1,15 +1,18 @@
 {
   "$GMObject":"",
-  "%Name":"obj_parede",
+  "%Name":"obj_anadaime",
   "eventList":[],
   "managed":true,
-  "name":"obj_parede",
+  "name":"obj_anadaime",
   "overriddenProperties":[],
   "parent":{
     "name":"level",
     "path":"folders/objeto/level.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_parede",
+    "path":"objects/obj_parede/obj_parede.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -28,8 +31,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_parede",
-    "path":"sprites/spr_parede/spr_parede.yy",
+    "name":"spr_andaime",
+    "path":"sprites/spr_andaime/spr_andaime.yy",
   },
   "spriteMaskId":null,
   "visible":true,

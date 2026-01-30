@@ -1,15 +1,18 @@
 {
   "$GMObject":"",
-  "%Name":"obj_parede",
+  "%Name":"obj_plataforma_grande",
   "eventList":[],
   "managed":true,
-  "name":"obj_parede",
+  "name":"obj_plataforma_grande",
   "overriddenProperties":[],
   "parent":{
     "name":"level",
     "path":"folders/objeto/level.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_parede_one_way",
+    "path":"objects/obj_parede_one_way/obj_parede_one_way.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -28,8 +31,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_parede",
-    "path":"sprites/spr_parede/spr_parede.yy",
+    "name":"spr_plataformar_grande",
+    "path":"sprites/spr_plataformar_grande/spr_plataformar_grande.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -31,8 +31,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"grup_bg",
-    "path":"folders/sprite/grup_bg.yy",
+    "name":"descorasao",
+    "path":"folders/sprite/grup_level/descorasao.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
