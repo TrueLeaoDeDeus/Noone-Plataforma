@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"gerar_espada",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"gerar_espada",
+  "parent":{
+    "name":"grup_gerador",
+    "path":"folders/scr/grup_gerador.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
