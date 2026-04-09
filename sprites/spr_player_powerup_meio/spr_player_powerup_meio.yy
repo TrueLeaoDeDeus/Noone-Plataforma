@@ -36,7 +36,7 @@
   "origin":9,
   "parent":{
     "name":"grup_powerup",
-    "path":"folders/sprite/grup_player/grup_powerup.yy",
+    "path":"folders/sprite/grup_player/grup_move/grup_powerup.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

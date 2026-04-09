@@ -1,0 +1,25 @@
+{
+  "$GMParticleSystem":"",
+  "%Name":"ps_porta",
+  "backdropHeight":32,
+  "backdropImageOpacity":0.5,
+  "backdropImagePath":"D:\\LeaoDeDEus_estudio\\Temporario\\Materiais e créditos\\Assets\\Cenário\\Itens\\Porta.png",
+  "backdropWidth":21,
+  "backdropXOffset":0.0,
+  "backdropYOffset":0.0,
+  "drawOrder":0,
+  "emitters":[
+    {"$GMPSEmitter":"","%Name":"Emitter","additiveBlend":true,"directionIncrease":0.0,"directionMax":100.0,"directionMin":300.0,"directionWiggle":4.0,"distribution":0,"editorColour":1090519039,"editorDrawShape":true,"emitCount":1,"emitDelayMax":14.0,"emitDelayMin":9.0,"emitDelayUnits":1,"emitIntervalMax":0.0,"emitIntervalMin":0.0,"emitIntervalUnits":1,"enabled":true,"endColour":2516582400,"GMPresetName":null,"gravityDirection":270.0,"gravityForce":0.02,"headPosition":0.0,"lifetimeMax":40.0,"lifetimeMin":20.0,"linkedEmitter":null,"locked":false,"midColour":4284966759,"mode":0,"name":"Emitter","orientationIncrease":0.0,"orientationMax":0.0,"orientationMin":0.0,"orientationRelative":false,"orientationWiggle":0.0,"regionH":3.115654,"regionW":20.462578,"regionX":0.0,"regionY":-14.0,"resourceType":"GMPSEmitter","resourceVersion":"2.0","scaleX":0.1,"scaleY":0.1,"shape":0,"sizeIncrease":0.0,"sizeMax":1.0,"sizeMin":0.0,"sizeWiggle":0.1,"spawnOnDeathCount":1,"spawnOnDeathGMPreset":null,"spawnOnDeathId":null,"spawnOnUpdateCount":1,"spawnOnUpdateGMPreset":null,"spawnOnUpdateId":null,"speedIncrease":0.0,"speedMax":0.1,"speedMin":0.1,"speedWiggle":0.0,"spriteAnimate":false,"spriteId":null,"spriteRandom":false,"spriteStretch":true,"startColour":4294967295,"texture":11,},
+  ],
+  "name":"ps_porta",
+  "parent":{
+    "name":"ParticleSystem",
+    "path":"folders/ParticleSystem.yy",
+  },
+  "resourceType":"GMParticleSystem",
+  "resourceVersion":"2.0",
+  "showBackdrop":true,
+  "showBackdropImage":true,
+  "xorigin":0,
+  "yorigin":0,
+}

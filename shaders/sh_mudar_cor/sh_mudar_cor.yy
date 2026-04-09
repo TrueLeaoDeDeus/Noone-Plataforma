@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_mudar_cor",
+  "name":"sh_mudar_cor",
+  "parent":{
+    "name":"shader",
+    "path":"folders/scr/shader.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

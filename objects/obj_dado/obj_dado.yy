@@ -1,7 +1,10 @@
 {
   "$GMObject":"",
   "%Name":"obj_dado",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_dado",
   "overriddenProperties":[],
@@ -10,8 +13,8 @@
     "path":"folders/objeto/level.yy",
   },
   "parentObjectId":{
-    "name":"obj_parede",
-    "path":"objects/obj_parede/obj_parede.yy",
+    "name":"obj_parede_one_way",
+    "path":"objects/obj_parede_one_way/obj_parede_one_way.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -26,7 +29,13 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[],
+  "properties":[
+    {"$GMObjectProperty":"v2","%Name":"estado_inicial","filters":[],"listItems":[
+        "\"estado_tangivel\"",
+        "\"estado_intangivel\"",
+      ],"multiselect":false,"name":"estado_inicial","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"estado_tangivel\"","varType":6,},
+    {"$GMObjectProperty":"v2","%Name":"tempo","filters":[],"listItems":[],"multiselect":false,"name":"tempo","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":1,},
+  ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

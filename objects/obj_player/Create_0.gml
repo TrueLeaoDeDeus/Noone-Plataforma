@@ -4,14 +4,27 @@
 vel_h       = 0;
 max_vel_h   = 2;
 vel_v       = 0;
-max_vel_v   = 6;    // Pulo.
+max_vel_v   = 3.8;    // Pulo.
 grav        = 0.2;  // Gravidade.
+
+dir = 1;
+chaves      = 0;   // Qtd de chaves.
+
+
+inicia_efeito_brilho()
+
 
 estado_atual = " ";
 
 // Variavel do level.
 chao = false;
 
+// Nao tem chave;
+chave = false;
+
+tl_tinta = layer_tilemap_get_id("tl_tinta");
+// O power  up nao pode ser usando no 
+powerup = false;
 // VAriaveis de inpust.
 
 jump        = false;
@@ -24,6 +37,8 @@ right       = false;
 var _leyer = layer_tilemap_get_id("tl_level");
 
 colisoes = [obj_parede,_leyer, obj_parede_one_way];
+// Sem chave;
+colisoes_mais_porta = [obj_parede,_leyer, obj_parede_one_way,obj_porta];
 
 view_player = noone;
 
@@ -43,12 +58,16 @@ pega_iputs              = function()
         
     right     = keyboard_check(ord("D"));
     
+    
     paint     = keyboard_check_pressed(ord("E"));  
 }
 
 checa_chao              = function ()
 {
     chao = place_meeting(x,y+1,colisoes);
+    
+    chao_de_tinta = place_meeting(x,y+1,tl_tinta);
+    
     // Se eu nao estou no chao aplico a minha velocidade.
     if(!chao) // SE eu NÃO estou no chao.
     {
@@ -126,11 +145,16 @@ estado_parado           = function()
     }
     
     // Se eu apertar E mudar para estado entrando tinta.
-    if (paint) 
+    
+  
+    
+    if (paint  && powerup && chao_de_tinta) 
     {
     	estado = estado_entrando_tinta;
         
     }
+    
+    
 }
 
 ajusta_escala = function ()
@@ -139,7 +163,10 @@ ajusta_escala = function ()
     if (vel_h != 0)
     {
         image_xscale = sign(vel_h);
+        
+        dir = sign(vel_h);
     }
+
 }
 
 estado_movendo          = function()
@@ -170,11 +197,13 @@ estado_movendo          = function()
     	estado =  estado_parado;
     }
     
-     if (paint) 
+        // Se eu apertar E mudar para estado entrando tinta.
+    if (paint  && powerup && chao_de_tinta)  
     {
     	estado = estado_entrando_tinta;
         
     }
+  
 }
 
 estado_pulando          = function()
@@ -227,8 +256,15 @@ estado_pulando          = function()
 
 }
 
+ativa_power_up = function()
+{
+    estado = estado_powerup_inicio;
+
+}
+
 estado_powerup_inicio   = function ()
 {
+
     estado_atual = "es_pow_inic";
     troca_sprite(spr_player_powerup_inicio);
     
@@ -247,20 +283,32 @@ estado_powerup_meio     = function()
     troca_sprite(spr_player_powerup_meio);
      var _spd = sprite_get_speed(sprite_index) / FPS;
     // Trocando  o estado no final da animação.
-    if (acabou_animacao())
-    {
-    	estado = estado_powerup_fim;
+    
+    if (!instance_exists(obj_particula_powerup)) {
+        
+        if (acabou_animacao())
+        {
+        	estado = estado_powerup_fim;
+            
+
+        }
+        
     }
+    
 } 
 
 estado_powerup_fim      = function()
 {   
+            vspeed = 0;
+            vel_v = 0;
+            vel_h = 0;
     estado_atual = "es_pow_fin";
     // No final da animação vai para o estado parado.
     troca_sprite(spr_player_powerup_fim);
     if (acabou_animacao()) 
     {   
         estado = estado_parado;
+        
         //show_debug_message("3");
     }   
     
@@ -291,7 +339,11 @@ estado_tinta_loop = function ()
 
     // Em tinta não cai
     vel_v = 0;
-
+    
+    // Mudando a mascar de colisao.
+    mask_index = spr_player_tinta_loop;
+    
+    
     troca_sprite(spr_player_tinta_loop);
 
     // Primeiro calcula a velocidade
@@ -299,7 +351,7 @@ estado_tinta_loop = function ()
     ajusta_escala();
 
     // Agora testa corretamente
-    if (place_meeting(x + (vel_h*8), y + 1, colisoes))
+    if (place_meeting(x + (vel_h*8), y + 1, tl_tinta))
     {
         move_and_collide(vel_h, 0, colisoes, 24);
     }
@@ -309,19 +361,22 @@ estado_tinta_loop = function ()
     }
 
     // Sair da tinta
-    if (paint)
+    if (paint )
     {
         estado = estado_saindo_tinta;
         instance_create_depth(x, y, depth - 1, obj_pulo_sair_particula);
     }
 }
 
-
 estado_saindo_tinta     = function ()
 {   
+    
     estado_atual = "es_saindo_tinta";
     //trocando a sprite.
     troca_sprite(spr_player_tinta_sair);
+    
+    // Trocando a mascara de colisao.
+    mask_index = spr_player_powerup_inicio;
 
     if (acabou_animacao()) 
     {   // Mudando o estado no final da animação.
@@ -334,17 +389,46 @@ aplica_velocidade       = function ()
     //checa_chao();
     // Aplicando agravidade.
     // Aplicando os inputs no vel_h.
-    vel_h = (right-left)*max_vel_h;
+  
+         vel_h = (right-left)*max_vel_h;
+         // Usando o move and collide.
+         move_and_collide(vel_h,0,colisoes,24);
+         
+         move_and_collide(0,vel_v,colisoes,24);
+         
+         ajusta_escala();
     
-    // Usando o move and collide.
-    move_and_collide(vel_h,0,colisoes,24);
-    
-    move_and_collide(0,vel_v,colisoes,24);
-    
-    ajusta_escala();
+         abre_portas();
+
 }
 
-#endregion
+abre_portas = function ()
+{
+    
+    var _porta_id = instance_place(x+vel_h,y,obj_porta);
+    if (_porta_id) {
+        
+        if (chaves > 0 && _porta_id.estado=="porta_fechado" ) {
+        	chaves--;
+            
+            _porta_id.estado = "porta_abrindo";
+             //show_message("fechado");
+           
+        }
+    	
+    }
+    
+    
+     //show_debug_message(chaves); 
+}
+
+pegar_chaves = function()
+{
+    chaves++;
+}
+
+
+#endregion 
 
 #region Debug.
 roda_debud = function ()
