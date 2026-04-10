@@ -8,8 +8,8 @@
   "name":"obj_pulo_sair_particula",
   "overriddenProperties":[],
   "parent":{
-    "name":"objeto",
-    "path":"folders/objeto.yy",
+    "name":"player",
+    "path":"folders/objeto/player.yy",
   },
   "parentObjectId":null,
   "persistent":false,

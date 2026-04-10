@@ -1,15 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"obj_pulo_particula",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"obj_placa",
+  "eventList":[],
   "managed":true,
-  "name":"obj_pulo_particula",
+  "name":"obj_placa",
   "overriddenProperties":[],
   "parent":{
-    "name":"player",
-    "path":"folders/objeto/player.yy",
+    "name":"level",
+    "path":"folders/objeto/level.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -30,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_pulo_particulas",
-    "path":"sprites/spr_pulo_particulas/spr_pulo_particulas.yy",
+    "name":"spr_placa",
+    "path":"sprites/spr_placa/spr_placa.yy",
   },
   "spriteMaskId":null,
   "visible":true,
