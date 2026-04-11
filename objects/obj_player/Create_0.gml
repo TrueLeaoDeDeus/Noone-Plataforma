@@ -4,7 +4,7 @@
 vel_h       = 0;
 max_vel_h   = 2;
 vel_v       = 0;
-max_vel_v   = 3.8;    // Pulo.
+max_vel_v   = 4;    // Pulo.
 grav        = 0.2;  // Gravidade.
 
 dir = 1;

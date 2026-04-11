@@ -65,6 +65,6 @@
   "spriteId":null,
   "spriteRandom":false,
   "spriteStretch":true,
-  "startColour":4294441727,
+  "startColour":4286054369,
   "texture":12,
 }
